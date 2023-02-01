@@ -1,48 +1,25 @@
 <p align="center">
-  <img src="./public/img/glhf.png" width="200" />
+  <img src="./public/img/glhf.png" width="150" />
+  <img src="./public/img/truyenbanquyen.png" width="100">
 </p>
 
 <p align="center">
-  <a href="https://manga.glhf.vn/">Website</a> |
-  <a href="mailto:konnichiwa@glhf.vn">Contact</a>
+  [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcatouberos%2Fmanga-mini&project-name=lph)
 </p>
 
 ## Getting started
 
-**As current state, the project has been moved from using Google Calendar (and Sheets) to Supabase Database for future scalability**
+A faster way to get started, using GLHF's prebuilt API.
 
-Clone it first, then create an environment variable file contain two of these values: `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
-
-Also, remember to install the packages first:
+Install the packages:
 
 ```bash
-yarn
+pnpm install
 ```
 
-Then, run the development server:
+Then, build and run the production server:
 
 ```bash
-yarn dev
+pnpm build
+pnpm start
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Customizing
-
-There're plenty of ways to start customizing, but first start with `src/data/`
-
-```tree
-data
-├── bookTypes.json
-├── publishers.json
-├── database.types.ts
-├── indexFilterStyles.ts
-├── next-seo.ts
-└── selectStyles.ts
-```
-
-## Side notes
-
-Database schema can be found on types file, in `src/data/database.types.ts`
-
-This project is built to be deployed on [Vercel](https://vercel.com/).
