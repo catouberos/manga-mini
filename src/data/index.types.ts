@@ -11,12 +11,6 @@ export type DateObj = {
   month: MonthNumbers;
 };
 
-// Slider type
-
-export interface SliderProps {
-  data: Publication[];
-}
-
 // Publication types
 
 export type ReleasesProps = {

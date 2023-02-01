@@ -1,6 +1,5 @@
 import type { InferGetStaticPropsType } from "next";
 import type {
-  SliderProps,
   FilterModalProps,
   InfoModalProps,
   ReleasesView,
@@ -8,10 +7,13 @@ import type {
   DateObj,
   PaginationProps,
 } from "@data/index.types";
-import type { Publication, PublicationByDate } from "@data/public.types";
+import type {
+  Publication,
+  PublicationByDate,
+  Publisher,
+} from "@data/public.types";
 
 import { VND } from "@data/config";
-import { getEntries, getPublishers } from "@lib/supabase";
 
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
@@ -24,8 +26,6 @@ import {
   BsCalendar2CheckFill,
   BsChevronLeft,
   BsChevronRight,
-  BsChevronCompactLeft,
-  BsChevronCompactRight,
   BsFilter,
   BsColumnsGap,
   BsListUl,
@@ -34,7 +34,6 @@ import {
   BsArrowUpShort,
 } from "react-icons/bs";
 import Image from "next/image";
-import { Splide, SplideTrack, SplideSlide } from "@splidejs/react-splide";
 
 import Layout from "@layouts/Layout";
 
@@ -43,91 +42,6 @@ import Button from "@components/Button";
 import Badge from "@components/Badge";
 import Cover from "@components/Cover";
 import Modal from "@components/Modal";
-import Header from "@components/Header";
-
-import "@splidejs/react-splide/css/core";
-
-const Slider = ({ data }: SliderProps) => {
-  if (data.length == 0) return <Header>Lịch phát hành</Header>;
-
-  return (
-    <div className="relative">
-      <div className="absolute inset-0 bottom-[30%] bg-zinc-100 shadow-[inset_0_0_1rem_0_rgba(0,0,0,0.1)] dark:bg-zinc-900"></div>
-      <Splide
-        hasTrack={false}
-        options={{
-          autoplay: true,
-          interval: 5000,
-          rewind: true,
-          pagination: false,
-          speed: 500,
-          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-          breakpoints: {
-            640: {
-              arrows: false,
-              padding: "1.5rem",
-              gap: "1rem",
-            },
-          },
-        }}
-        className="pt-20 sm:pt-6"
-      >
-        <div className="block px-6 sm:hidden">
-          <span className="font-kanit text-3xl font-bold">Phát hành</span>
-        </div>
-        <SplideTrack>
-          {data.map((release) => (
-            <SplideSlide key={release.id}>
-              <div className="container mx-auto flex flex-col-reverse gap-6 pb-12 sm:flex-row sm:gap-12 sm:px-6">
-                <div className="relative cursor-default overflow-hidden rounded-2xl shadow-md transition-all ease-in-out hover:shadow-lg sm:basis-72">
-                  {release.edition && (
-                    <Badge className="absolute top-0 right-0 bg-amber-200/75 backdrop-blur-md">
-                      {release.edition}
-                    </Badge>
-                  )}
-                  <Cover
-                    entry={release}
-                    hero={true}
-                    sizes="(max-width: 768px) 80vw, (max-width: 1024px) 25vw, 15vw"
-                  />
-                </div>
-                <div className="sm:flex-1 sm:pt-20">
-                  <span className="hidden sm:inline">Phát hành </span>
-                  <span className="text-xl sm:text-base">
-                    <span className="capitalize">
-                      {DateTime.fromISO(release.date).toFormat("EEEE, D")}
-                    </span>
-                  </span>
-                  <h2 className="mt-3 mb-6 hidden font-kanit text-4xl font-bold sm:block">
-                    {release.name}
-                  </h2>
-                  <p className="hidden sm:block">
-                    <b>Nhà xuất bản/phát hành</b>: {release.publisher.name}
-                    <br />
-                    <b>Giá dự kiến</b>: {VND.format(release.price)}
-                  </p>
-                </div>
-              </div>
-            </SplideSlide>
-          ))}
-        </SplideTrack>
-
-        <div className="splide__arrows absolute top-1/2 left-0 right-0 mx-6 flex -translate-y-1/2 transform justify-between">
-          <button className="splide__arrow splide__arrow--prev text-4xl text-zinc-500">
-            <BsChevronCompactLeft />
-          </button>
-          <button className="splide__arrow splide__arrow--next text-4xl text-zinc-500">
-            <BsChevronCompactRight />
-          </button>
-        </div>
-
-        <div className="splide__progress absolute top-[70%] left-0 right-0 -z-10 hidden sm:block">
-          <div className="splide__progress__bar h-1 bg-primary" />
-        </div>
-      </Splide>
-    </div>
-  );
-};
 
 const MonthSelect = ({ date, options }: PaginationProps) => {
   const { month } = date;
@@ -138,11 +52,8 @@ const MonthSelect = ({ date, options }: PaginationProps) => {
   const nextMonth = thisMonth.plus({ month: 1 });
 
   return (
-    <Menu
-      as="div"
-      className="relative inline-block font-kanit text-2xl font-bold"
-    >
-      <Menu.Button className="flex items-center gap-3 rounded-2xl bg-zinc-200 py-1 px-2 dark:bg-zinc-700">
+    <Menu as="div" className="relative inline-block text-2xl font-bold">
+      <Menu.Button className="flex items-center gap-3 rounded-2xl bg-zinc-200 py-1 px-2">
         tháng {month}
         <BsChevronDown className="text-sm" />
       </Menu.Button>
@@ -154,25 +65,25 @@ const MonthSelect = ({ date, options }: PaginationProps) => {
         leaveFrom="transform scale-100 opacity-100"
         leaveTo="transform scale-95 opacity-0"
       >
-        <Menu.Items className="absolute right-0 mt-3 w-full overflow-hidden rounded-2xl bg-zinc-200 shadow-lg dark:bg-zinc-700">
+        <Menu.Items className="absolute right-0 mt-3 w-full overflow-hidden rounded-2xl bg-zinc-200 shadow-lg">
           <Menu.Item
             as="div"
             onClick={() => changeDate(prevMonth)}
-            className="transition-color block cursor-pointer py-1 px-2 duration-75 ease-linear ui-active:bg-zinc-300 ui-active:dark:bg-zinc-600"
+            className="transition-color block cursor-pointer py-1 px-2 duration-75 ease-linear ui-active:bg-zinc-300"
           >
             {prevMonth.toFormat("MMMM")}
           </Menu.Item>
           <Menu.Item
             as="div"
             onClick={() => changeDate(thisMonth)}
-            className="transition-color block cursor-pointer py-1 px-2 duration-75 ease-linear ui-active:bg-zinc-300 ui-active:dark:bg-zinc-600"
+            className="transition-color block cursor-pointer py-1 px-2 duration-75 ease-linear ui-active:bg-zinc-300"
           >
             {thisMonth.toFormat("MMMM")}
           </Menu.Item>
           <Menu.Item
             as="div"
             onClick={() => changeDate(nextMonth)}
-            className="transition-color block cursor-pointer py-1 px-2 duration-75 ease-linear ui-active:bg-zinc-300 ui-active:dark:bg-zinc-600"
+            className="transition-color block cursor-pointer py-1 px-2 duration-75 ease-linear ui-active:bg-zinc-300"
           >
             {nextMonth.toFormat("MMMM")}
           </Menu.Item>
@@ -238,7 +149,7 @@ const FilterModal = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div>
-        <Dialog.Title className="m-6 font-kanit text-2xl font-bold lg:text-3xl">
+        <Dialog.Title className="m-6 text-2xl font-bold lg:text-3xl">
           Lọc theo nhà xuất bản/phát hành
         </Dialog.Title>
         <Dialog.Description as="div" className="m-6">
@@ -273,7 +184,7 @@ const FilterModal = ({
                 />
                 <label
                   htmlFor={`${value.id}`}
-                  className="ml-3 text-sm text-zinc-600 dark:text-zinc-400"
+                  className="ml-3 text-sm text-zinc-600"
                 >
                   {value.name}
                 </label>
@@ -308,7 +219,7 @@ const InfoModal = ({ isOpen, onClose, data }: InfoModalProps) => {
           <div className="flex-1 p-6 sm:pt-9">
             <div className="flex h-full flex-col justify-between">
               <div>
-                <Dialog.Title className="mb-3 font-kanit text-2xl font-bold lg:text-3xl">
+                <Dialog.Title className="mb-3 text-2xl font-bold lg:text-3xl">
                   {data.name}
                 </Dialog.Title>
                 <Dialog.Description>
@@ -384,18 +295,18 @@ const InfoModal = ({ isOpen, onClose, data }: InfoModalProps) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="flex animate-pulse flex-col sm:flex-row">
-        <div className="h-[600px] w-full bg-zinc-200 dark:bg-zinc-700 sm:h-[400px] sm:max-w-[250px]"></div>
+        <div className="h-[600px] w-full bg-zinc-200 sm:h-[400px] sm:max-w-[250px]"></div>
         <div className="flex-1 p-6 sm:pt-9">
           <div className="flex h-full flex-col justify-between">
             <div>
-              <Dialog.Title className="mb-3 font-kanit text-2xl font-bold lg:text-3xl">
-                <div className="dark:bg-zinc-7 h-6 w-full rounded bg-zinc-300 dark:bg-zinc-700"></div>
-                <div className="dark:bg-zinc-7 mt-3 h-6 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+              <Dialog.Title className="mb-3 text-2xl font-bold lg:text-3xl">
+                <div className="h-6 w-full rounded bg-zinc-300"></div>
+                <div className="mt-3 h-6 w-2/3 rounded bg-zinc-300"></div>
               </Dialog.Title>
               <Dialog.Description>
-                <div className="dark:bg-zinc-7 mt-6 h-5 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
-                <div className="dark:bg-zinc-7 mt-6 h-5 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
-                <div className="dark:bg-zinc-7 mt-3 h-5 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                <div className="mt-6 h-5 w-2/3 rounded bg-zinc-300"></div>
+                <div className="mt-6 h-5 w-2/3 rounded bg-zinc-300"></div>
+                <div className="mt-3 h-5 w-2/3 rounded bg-zinc-300"></div>
               </Dialog.Description>
             </div>
             <div className="mt-6">
@@ -444,13 +355,13 @@ const GridView = ({ releases, isLoading, options }: ReleasesView) => {
             <div className="container mx-auto animate-pulse px-6" key={i}>
               <div className={`mt-12 mb-6 flex items-center text-xl font-bold`}>
                 <span className="capitalize">
-                  <div className="dark:bg-zinc-7 h-6 w-72 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                  <div className="h-6 w-72 rounded bg-zinc-300"></div>
                 </span>
               </div>
               <div className="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-6">
                 {[...Array(6)].map((_, i) => (
                   <Card key={i}>
-                    <div className="dark:bg-zinc-7 h-[240px] w-full rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                    <div className="h-[240px] w-full rounded bg-zinc-300"></div>
                   </Card>
                 ))}
               </div>
@@ -509,34 +420,32 @@ const ListView = ({ releases, isLoading, options }: ReleasesView) => {
 
   if (isLoading)
     return (
-      <div className="mx-auto overflow-scroll lg:container">
+      <div className="mx-auto overflow-auto lg:container">
         <div className="min-w-fit px-6">
-          <div className="mt-12 grid min-w-max animate-pulse grid-cols-6 overflow-hidden rounded-2xl border dark:border-zinc-600">
-            <span className="border-r p-3 text-center font-bold dark:border-zinc-600 dark:bg-zinc-700">
+          <div className="mt-12 grid min-w-max animate-pulse grid-cols-6 overflow-hidden rounded-2xl border">
+            <span className="border-r p-3 text-center font-bold">
               Ngày phát hành
             </span>
-            <span className="col-span-4 p-3 font-bold dark:bg-zinc-700">
-              Tên
-            </span>
-            <span className="p-3 font-bold dark:bg-zinc-700">Giá</span>
+            <span className="col-span-4 p-3 font-bold">Tên</span>
+            <span className="p-3 font-bold">Giá</span>
             {[...Array(4)].map((_, i) => {
               return (
                 <>
                   <div
-                    className="flex h-full items-center justify-center border-t border-r p-3 font-bold dark:border-zinc-600"
+                    className="flex h-full items-center justify-center border-t border-r p-3 font-bold"
                     style={{
                       gridRow: `span 5 / span 5`,
                     }}
                   >
-                    <div className="dark:bg-zinc-7 h-5 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                    <div className="h-5 w-2/3 rounded bg-zinc-300"></div>
                   </div>
                   {[...Array(5)].map((_, i) => (
                     <>
-                      <div className="col-span-4 flex cursor-pointer items-center gap-3 border-t p-3 decoration-primary decoration-2 hover:underline dark:border-zinc-600">
-                        <div className="dark:bg-zinc-7 h-5 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                      <div className="col-span-4 flex cursor-pointer items-center gap-3 border-t p-3 decoration-primary decoration-2 hover:underline">
+                        <div className="h-5 w-2/3 rounded bg-zinc-300"></div>
                       </div>
-                      <div className="border-t p-3 dark:border-zinc-600">
-                        <div className="dark:bg-zinc-7 h-5 w-2/3 rounded bg-zinc-300 dark:bg-zinc-700"></div>
+                      <div className="border-t p-3">
+                        <div className="h-5 w-2/3 rounded bg-zinc-300"></div>
                       </div>
                     </>
                   ))}
@@ -549,14 +458,14 @@ const ListView = ({ releases, isLoading, options }: ReleasesView) => {
     );
 
   return (
-    <div className="mx-auto overflow-scroll lg:container">
+    <div className="mx-auto overflow-auto lg:container">
       <div className="min-w-fit px-6">
-        <div className="mt-12 grid min-w-max grid-cols-6 overflow-hidden rounded-2xl border dark:border-zinc-600">
-          <span className="border-r p-3 text-center font-bold dark:border-zinc-600 dark:bg-zinc-700">
+        <div className="mt-12 grid min-w-max grid-cols-6 overflow-hidden rounded-2xl border">
+          <span className="border-r p-3 text-center font-bold">
             Ngày phát hành
           </span>
-          <span className="col-span-4 p-3 font-bold dark:bg-zinc-700">Tên</span>
-          <span className="p-3 font-bold dark:bg-zinc-700">Giá</span>
+          <span className="col-span-4 p-3 font-bold">Tên</span>
+          <span className="p-3 font-bold">Giá</span>
           {releases.map((releaseGroup) => {
             const date = DateTime.fromISO(releaseGroup.date);
             const today = DateTime.now();
@@ -564,20 +473,20 @@ const ListView = ({ releases, isLoading, options }: ReleasesView) => {
             return (
               <>
                 <div
-                  className="flex h-full items-center justify-center border-t border-r p-3 font-bold dark:border-zinc-600"
+                  className="flex h-full items-center justify-center border-t border-r p-3 font-bold"
                   style={{
                     gridRow: `span ${releaseGroup.entries.length} / span ${releaseGroup.entries.length}`,
                   }}
                 >
                   <span>{date.toFormat("dd/MM/yyyy")}</span>
                   {date < today && (
-                    <BsCalendar2CheckFill className="ml-3 inline-block align-baseline text-green-700 dark:text-green-200" />
+                    <BsCalendar2CheckFill className="ml-3 inline-block align-baseline text-green-700" />
                   )}
                 </div>
                 {releaseGroup.entries.map((release) => (
                   <>
                     <div
-                      className="col-span-4 flex cursor-pointer items-center gap-3 border-t p-3 decoration-primary decoration-2 hover:underline dark:border-zinc-600"
+                      className="col-span-4 flex cursor-pointer items-center gap-3 border-t p-3 decoration-primary decoration-2 hover:underline"
                       onClick={() => {
                         setModalData(release);
                         setModalOpen(true);
@@ -591,7 +500,7 @@ const ListView = ({ releases, isLoading, options }: ReleasesView) => {
                       )}
                       <BsBoxArrowUpRight className="inline-block text-zinc-400" />
                     </div>
-                    <span className="border-t p-3 dark:border-zinc-600">
+                    <span className="border-t p-3">
                       {VND.format(release.price)}
                     </span>
                   </>
@@ -656,7 +565,7 @@ const Releases = ({ date, view, filters, order, options }: ReleasesProps) => {
       <div className="container mx-auto mt-12 flex items-center justify-center px-3">
         <div className="text-center">
           <p>{"＼(º □ º l|l)/"}</p>
-          <h1 className="my-3 font-kanit text-4xl font-bold">Nani?</h1>
+          <h1 className="my-3 text-4xl font-bold">Nani?</h1>
           <p>
             Chuyện kỳ quái gì đã xảy ra. Vui lòng tải lại trang hoặc liên hệ bọn
             mình nhé.
@@ -670,9 +579,7 @@ const Releases = ({ date, view, filters, order, options }: ReleasesProps) => {
       <div className="container mx-auto mt-12 flex items-center justify-center px-3">
         <div className="text-center">
           <p>{"~(>_<~)"}</p>
-          <h1 className="my-3 font-kanit text-4xl font-bold">
-            Không tìm thấy!
-          </h1>
+          <h1 className="my-3 text-4xl font-bold">Không tìm thấy!</h1>
           <p>Có thể lịch phát hành tháng này chưa có, quay lại sau nhé!</p>
         </div>
       </div>
@@ -691,17 +598,12 @@ const Releases = ({ date, view, filters, order, options }: ReleasesProps) => {
 export const getStaticProps = async () => {
   const now = DateTime.now();
 
-  const upcoming = await getEntries(
-    now.toISODate(),
-    now.plus({ days: 3 }).toISODate()
-  );
-
-  const publishers = await getPublishers();
+  const res = await fetch("https://manga.glhf.vn/api/publishers");
+  const publishers: Publisher[] = await res.json();
 
   return {
     props: {
       publishers,
-      upcoming,
     },
     revalidate: 600, // revalidate every 10 minutes
   };
@@ -709,7 +611,6 @@ export const getStaticProps = async () => {
 
 export default function Home({
   publishers,
-  upcoming,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalData, setModalData] = useState<Publication | undefined>();
@@ -740,21 +641,11 @@ export default function Home({
   return (
     <Layout>
       <NextSeo
-        title="Lịch phát hành manga/light-novel"
-        description="Xem lịch phát hành manga/light-novel từ NXB Kim Đồng, NXB Trẻ, IPM và các công ty phát hành khác."
+        title="Lịch phát hành"
+        description="Xem lịch phát hành manga/light-novel."
         openGraph={{
-          title: `Lịch phát hành manga/light-novel`,
+          title: `Lịch phát hành`,
           description: `Xem lịch phát hành manga/light-novel từ các nhà xuất bản.`,
-          images: [
-            {
-              url: encodeURI(
-                "https://manga.glhf.vn/api/og/?title=Lịch phát hành"
-              ),
-              width: 1200,
-              height: 630,
-              alt: "Lịch phát hành",
-            },
-          ],
         }}
       />
 
@@ -772,12 +663,10 @@ export default function Home({
         handler={changeFilterPublishers}
       />
 
-      <Slider data={upcoming} />
-
-      <div className="sticky top-0 z-10 bg-zinc-50/75 pb-4 pt-20 backdrop-blur-md dark:bg-zinc-800/75 lg:pt-4">
+      <div className="sticky top-0 z-10 bg-zinc-50/75 py-4 pt-20 backdrop-blur-md">
         <div className="container mx-auto flex flex-row justify-between gap-6 px-6">
           <div>
-            <span className="hidden font-kanit text-2xl font-bold sm:inline">
+            <span className="hidden text-2xl font-bold sm:inline">
               Lịch phát hành
             </span>{" "}
             <MonthSelect date={currentDate} options={{ changeDate }} />

@@ -1,11 +1,4 @@
-import {
-  BsFacebook,
-  BsTwitter,
-  BsDiscord,
-  BsGithub,
-  BsArrowUp,
-} from "react-icons/bs";
-import Link from "next/link";
+import { BsFacebook, BsArrowUp, BsYoutube } from "react-icons/bs";
 
 export default function Footer() {
   const handleClick = () => {
@@ -22,7 +15,7 @@ export default function Footer() {
           <ul className="flex gap-3 text-2xl text-zinc-400">
             <li>
               <a
-                href="https://facebook.com/mangaglhf/"
+                href="https://fb.com/truyenbanquyen/"
                 className="transition-colors duration-100 ease-linear hover:text-[#1877f2]"
                 aria-label="Facebook"
               >
@@ -31,29 +24,11 @@ export default function Footer() {
             </li>
             <li>
               <a
-                href="https://twitter.com/mangaglhf/"
-                className="transition-colors duration-100 ease-linear hover:text-[#1da1f2]"
-                aria-label="Twitter"
+                href="https://www.youtube.com/c/truyenbanquyen"
+                className="transition-colors duration-100 ease-linear hover:text-[#ff0000]"
+                aria-label="YouTube"
               >
-                <BsTwitter />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://via.glhf.vn/discord"
-                className="transition-colors duration-100 ease-linear hover:text-[#5865f2]"
-                aria-label="Discord"
-              >
-                <BsDiscord />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/glhf-vn"
-                className="transition-colors duration-100 ease-linear hover:text-[#161b22]"
-                aria-label="GitHub"
-              >
-                <BsGithub />
+                <BsYoutube />
               </a>
             </li>
           </ul>
@@ -62,19 +37,19 @@ export default function Footer() {
           <ul className="flex flex-row gap-6">
             <li>
               <a
-                href="mailto:konnichiwa@glhf.vn"
-                className="transition-all ease-linear hover:text-zinc-600"
+                href="https://manga.glhf.vn"
+                className="transition-all ease-linear hover:text-[#f8b60b]"
               >
-                Liên hệ
+                Supported by GLHF
               </a>
             </li>
             <li>
-              <Link
-                href="/donate"
+              <a
+                href="mailto:konnichiwa@glhf.vn"
                 className="transition-all ease-linear hover:text-zinc-600"
               >
-                Ủng hộ
-              </Link>
+                Báo lỗi
+              </a>
             </li>
           </ul>
           <BsArrowUp

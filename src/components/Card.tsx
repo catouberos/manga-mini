@@ -2,7 +2,7 @@ import type { HTMLProps, ReactNode } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 const cardStyles = cva(
-  "rounded-2xl h-fit shadow-md bg-zinc-100 overflow-hidden relative dark:bg-zinc-700",
+  "rounded-2xl h-fit shadow-md bg-zinc-100 overflow-hidden relative",
   {
     variants: {
       intent: {

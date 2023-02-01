@@ -16,11 +16,10 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#f8b60b",
+        primary: "#2684ff",
       },
       fontFamily: {
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        kanit: "Kanit, sans-serif",
+        sans: ["Montserrat", ...defaultTheme.fontFamily.sans],
       },
     },
   },

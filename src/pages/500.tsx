@@ -26,7 +26,7 @@ export default function Custom500() {
       <div className="container mx-auto flex h-screen items-center justify-center px-3">
         <div className="text-center">
           <p>¯\_| ✖ 〜 ✖ |_/¯</p>
-          <h1 className="font-kanit text-9xl font-bold">500</h1>
+          <h1 className="text-9xl font-bold">500</h1>
           <p>
             Oops, máy chủ đã bị lỗi-chan đấm.
             <br />

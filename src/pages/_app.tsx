@@ -13,6 +13,7 @@ import { seoConfig } from "@data/config";
 export default function App({ Component, pageProps }: AppProps) {
   Settings.defaultLocale = "vi";
 
+  // todo: SEO
   return (
     <div>
       <DefaultSeo

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
-import { BsFacebook, BsTwitter, BsDiscord, BsGithub } from "react-icons/bs";
+import { BsFacebook, BsYoutube } from "react-icons/bs";
 import { slide as Menu } from "react-burger-menu";
 import { Squash as Hamburger } from "hamburger-react";
 
@@ -22,46 +22,33 @@ const MobileMenu = () => {
         isOpen={menuOpen}
         onStateChange={(state) => setMenuOpen(state.isOpen)}
         customBurgerIcon={false}
-        width={"100%"}
+        width={"80%"}
         right
       >
-        <Link href="/" className={`bm-item font-kanit`}>
+        <a href="https://truyenbanquyen.com/" className="bm-item">
+          Trang chủ
+        </a>
+        <a href="https://truyenbanquyen.com/wiki/" className="bm-item">
+          Wiki
+        </a>
+        <Link href="/" className="bm-item">
           Lịch phát hành
-        </Link>
-        <Link href="/license" className={`bm-item font-kanit`}>
-          Thông tin bản quyền
-        </Link>
-        <Link href="/listing" className={`bm-item font-kanit`}>
-          Mua truyện mới
-        </Link>
-        <Link href="/donate" className={`bm-item font-kanit`}>
-          {"Ủng hộ <3"}
         </Link>
         <hr className="bm-divider w-12 border-4 border-zinc-400" />
         <ul className="bm-social" style={{ display: "flex" }}>
           <a
             href="https://facebook.com/mangaglhf/"
             className="transition-colors duration-100 ease-linear hover:text-[#1877f2]"
+            aria-label="Facebook"
           >
             <BsFacebook />
           </a>
           <a
-            href="https://twitter.com/mangaglhf/"
-            className="transition-colors duration-100 ease-linear hover:text-[#1da1f2]"
+            href="https://www.youtube.com/c/truyenbanquyen"
+            className="transition-colors duration-100 ease-linear hover:text-[#ff0000]"
+            aria-label="YouTube"
           >
-            <BsTwitter />
-          </a>
-          <a
-            href="https://via.glhf.vn/discord"
-            className="transition-colors duration-100 ease-linear hover:text-[#5865f2]"
-          >
-            <BsDiscord />
-          </a>
-          <a
-            href="https://github.com/glhf"
-            className="transition-colors duration-100 ease-linear hover:text-[#ffffff]"
-          >
-            <BsGithub />
+            <BsYoutube />
           </a>
         </ul>
       </Menu>
@@ -69,7 +56,7 @@ const MobileMenu = () => {
       {/* open menu on mobile */}
       <div
         className={`fixed top-4 right-4 z-[1200] sm:hidden ${
-          menuOpen ? "text-zinc-50" : "text-zinc-800 dark:text-zinc-50"
+          menuOpen ? "text-zinc-50" : "text-zinc-800"
         }`}
       >
         <Hamburger
@@ -88,8 +75,24 @@ const DesktopMenu = () => {
   const router = useRouter();
 
   return (
-    <div className="absolute top-6 right-6 z-10 hidden sm:block">
+    <div className="hidden sm:block">
       <ul className="flex font-bold text-zinc-500">
+        <li>
+          <a
+            href="https://truyenbanquyen.com/"
+            className="p-3 transition-colors duration-100 ease-linear hover:text-zinc-700"
+          >
+            Trang chủ
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://truyenbanquyen.com/wiki/"
+            className="p-3 transition-colors duration-100 ease-linear hover:text-zinc-700"
+          >
+            Wiki
+          </a>
+        </li>
         <li>
           <Link
             href="/"
@@ -102,42 +105,6 @@ const DesktopMenu = () => {
             Lịch phát hành
           </Link>
         </li>
-        <li>
-          <Link
-            href="/license"
-            className={`${
-              router.pathname.includes("license")
-                ? "text-primary"
-                : "transition-colors duration-100 ease-linear hover:text-zinc-700"
-            } p-3`}
-          >
-            Bản quyền
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/listing"
-            className={`${
-              router.pathname.includes("listing")
-                ? "text-primary"
-                : "transition-colors duration-100 ease-linear hover:text-zinc-700"
-            } p-3`}
-          >
-            Truyện mới
-          </Link>
-        </li>
-        <li>
-          <Link
-            href="/donate"
-            className={`${
-              router.pathname.includes("donate")
-                ? "text-primary"
-                : "transition-colors duration-100 ease-linear hover:text-zinc-700"
-            } p-3`}
-          >
-            Ủng hộ
-          </Link>
-        </li>
       </ul>
     </div>
   );
@@ -146,16 +113,33 @@ const DesktopMenu = () => {
 export default function Navigation() {
   return (
     <>
-      {/* logo */}
-      <div className="fixed top-6 left-6 z-[1200]">
-        <Link href="/" scroll={false}>
-          <Image src="/img/logo.png" width={64} height={32} alt="GLHF logo" />
-        </Link>
+      <div className="fixed top-0 z-20 h-20 w-full">
+        <div className="container mx-auto flex h-full items-center justify-between px-6">
+          {/* logo */}
+          <div className="flex items-center gap-3 text-zinc-500">
+            <a href="https://truyenbanquyen.com/">
+              <Image
+                src="/img/truyenbanquyen.png"
+                width={48}
+                height={48}
+                alt="GLHF logo"
+              />
+            </a>
+            {"|"}
+            <a href="https://manga.glhf.vn">
+              <Image
+                src="/img/glhf.png"
+                width={64}
+                height={32}
+                alt="GLHF logo"
+              />
+            </a>
+          </div>
+
+          <DesktopMenu />
+        </div>
       </div>
-
       <MobileMenu />
-
-      <DesktopMenu />
     </>
   );
 }

@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getEntriesByGroup } from "@lib/supabase";
 import { DateTime } from "luxon";
 
 export default async function Releases(
@@ -16,18 +15,16 @@ export default async function Releases(
     method,
   } = req;
 
-  let parsedOrder = order === "descending" ? false : true;
-
   switch (method) {
     case "GET":
-      const entries = await getEntriesByGroup(
-        start as string,
-        end as string,
-        {
-          publishers: publisher,
-        },
-        parsedOrder
-      );
+      let url = `https://manga.glhf.vn/api/releases?start=${start}&end=${end}&order=${order}`;
+
+      if (Array.isArray(publisher))
+        publisher.map((publisher) => (url += `&publisher=${publisher}`));
+      else if (publisher) url += `&publisher=${publisher}`;
+
+      const apiRes = await fetch(url);
+      const entries = await apiRes.json();
 
       if (entries) {
         // Get data from your database, also cache on Vercel's network for 2 hours
