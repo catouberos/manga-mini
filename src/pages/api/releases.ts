@@ -1,42 +1,52 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import { DateTime } from "luxon";
+import { NextRequest, NextResponse } from "next/server";
 
-export default async function Releases(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const {
-    query: {
-      start = DateTime.now().startOf("month").toISODate(),
-      end = DateTime.now().endOf("month").toISODate(),
-      publisher,
-      order,
-    },
-    method,
-  } = req;
+export const config = {
+  runtime: "edge",
+};
+
+export default async function Releases(req: NextRequest) {
+  const { method } = req;
 
   switch (method) {
     case "GET":
+      const { searchParams } = new URL(req.url);
+
+      const start =
+        searchParams.get("start") ??
+        DateTime.now().startOf("month").toISODate();
+      const end =
+        searchParams.get("end") ?? DateTime.now().endOf("month").toISODate();
+      const order = searchParams.get("order");
+
+      const publisher = searchParams.getAll("publisher");
+
       let url = `https://manga.glhf.vn/api/releases?start=${start}&end=${end}&order=${order}`;
 
-      if (Array.isArray(publisher))
+      if (publisher.length > 0)
         publisher.map((publisher) => (url += `&publisher=${publisher}`));
-      else if (publisher) url += `&publisher=${publisher}`;
 
       const apiRes = await fetch(url);
       const entries = await apiRes.json();
 
-      if (entries) {
-        // Get data from your database, also cache on Vercel's network for 2 hours
-        res.setHeader("Cache-Control", "max-age=0, s-maxage=7200");
-        res.status(200).json(entries);
+      if (entries && entries.length > 0) {
+        // Get data from your database
+        return new NextResponse(JSON.stringify(entries), {
+          status: 200,
+          headers: {
+            "content-type": "application/json",
+            "cache-control":
+              "public, s-maxage=7200, stale-while-revalidate=600",
+          },
+        });
       } else {
-        res.status(204).end();
+        return new NextResponse(null, {
+          status: 204,
+        });
       }
-
-      break;
     default:
-      res.setHeader("Allow", ["GET"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      return new NextResponse(undefined, {
+        status: 405,
+      });
   }
 }
