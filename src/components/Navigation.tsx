@@ -84,11 +84,11 @@ const DesktopMenu = () => {
 
   return (
     <div className="hidden sm:block">
-      <ul className="flex font-bold text-zinc-500">
+      <ul className="flex items-center gap-3 font-bold text-zinc-500">
         <li>
           <a
             href="https://truyenbanquyen.com/"
-            className="p-3 transition-colors duration-100 ease-linear hover:text-zinc-700"
+            className="transition-colors duration-100 ease-linear hover:text-zinc-700"
           >
             Trang chủ
           </a>
@@ -96,7 +96,7 @@ const DesktopMenu = () => {
         <li>
           <a
             href="https://truyenbanquyen.com/wiki/"
-            className="p-3 transition-colors duration-100 ease-linear hover:text-zinc-700"
+            className="transition-colors duration-100 ease-linear hover:text-zinc-700"
           >
             Wiki
           </a>
@@ -104,14 +104,41 @@ const DesktopMenu = () => {
         <li>
           <Link
             href="/"
-            className={`${
+            className={
               router.pathname == "/" || router.pathname.includes("archive")
                 ? "text-primary"
                 : "transition-colors duration-100 ease-linear hover:text-zinc-700"
-            } p-3`}
+            }
           >
             Lịch phát hành
           </Link>
+        </li>
+        <li>
+          <a
+            href="https://fb.com/truyenbanquyen/"
+            className="text-lg transition-colors duration-100 ease-linear hover:text-[#1877f2]"
+            aria-label="Facebook"
+          >
+            <BsFacebook />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://www.youtube.com/c/truyenbanquyen"
+            className="text-lg transition-colors duration-100 ease-linear hover:text-[#ff0000]"
+            aria-label="YouTube"
+          >
+            <BsYoutube />
+          </a>
+        </li>
+        <li>
+          <a
+            href="https://tiktok.com/@mi.manga.life"
+            className="text-lg transition-colors duration-100 ease-linear hover:text-black"
+            aria-label="TikTok"
+          >
+            <FaTiktok />
+          </a>
         </li>
       </ul>
     </div>
