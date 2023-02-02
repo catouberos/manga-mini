@@ -166,6 +166,7 @@ const Pagination = ({ date, options }: PaginationProps) => {
         }
       >
         <BsChevronLeft />
+        <span>Trước</span>
       </Button>
 
       <Button
@@ -175,6 +176,7 @@ const Pagination = ({ date, options }: PaginationProps) => {
           changeDate({ year: nextMonth.year, month: nextMonth.month })
         }
       >
+        <span>Sau</span>
         <BsChevronRight />
       </Button>
     </div>
@@ -580,7 +582,7 @@ const useReleases = (
       order,
       publishers,
     },
-    async ({ year, month, publishers }) => {
+    async ({ year, month, order, publishers }) => {
       const dateObj = DateTime.fromObject({ year, month });
 
       let url = `/api/releases?start=${dateObj
@@ -753,7 +755,7 @@ export default function Home({
         </div>
         <div className="container mx-auto mt-3 flex items-center justify-between px-6">
           <Pagination date={currentDate} options={{ changeDate }} />
-          <ul className="flex items-center gap-3 text-xl text-zinc-500">
+          <ul className="flex items-center gap-3 text-xl text-zinc-500 sm:hidden">
             <li>
               <a
                 href="https://fb.com/truyenbanquyen/"
