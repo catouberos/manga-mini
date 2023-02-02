@@ -116,7 +116,7 @@ const DesktopMenu = () => {
         <li>
           <a
             href="https://fb.com/truyenbanquyen/"
-            className="text-lg transition-colors duration-100 ease-linear hover:text-[#1877f2]"
+            className="text-2xl transition-colors duration-100 ease-linear hover:text-[#1877f2]"
             aria-label="Facebook"
           >
             <BsFacebook />
@@ -125,7 +125,7 @@ const DesktopMenu = () => {
         <li>
           <a
             href="https://www.youtube.com/c/truyenbanquyen"
-            className="text-lg transition-colors duration-100 ease-linear hover:text-[#ff0000]"
+            className="text-2xl transition-colors duration-100 ease-linear hover:text-[#ff0000]"
             aria-label="YouTube"
           >
             <BsYoutube />
@@ -134,7 +134,7 @@ const DesktopMenu = () => {
         <li>
           <a
             href="https://tiktok.com/@mi.manga.life"
-            className="text-lg transition-colors duration-100 ease-linear hover:text-black"
+            className="text-2xl transition-colors duration-100 ease-linear hover:text-black"
             aria-label="TikTok"
           >
             <FaTiktok />

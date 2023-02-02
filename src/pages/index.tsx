@@ -165,8 +165,15 @@ const Pagination = ({ date, options }: PaginationProps) => {
           changeDate({ year: prevMonth.year, month: prevMonth.month })
         }
       >
-        <BsChevronLeft />
-        <span>Trước</span>
+        <span className="hidden sm:block">
+          <BsChevronLeft />
+          Trước
+        </span>
+        <span className="flex -space-x-2 sm:hidden">
+          <BsChevronLeft />
+          <BsChevronLeft />
+          <BsChevronLeft />
+        </span>
       </Button>
 
       <Button
@@ -176,8 +183,15 @@ const Pagination = ({ date, options }: PaginationProps) => {
           changeDate({ year: nextMonth.year, month: nextMonth.month })
         }
       >
-        <span>Sau</span>
-        <BsChevronRight />
+        <span className="hidden sm:block">
+          Sau
+          <BsChevronRight />
+        </span>
+        <span className="flex -space-x-2 sm:hidden">
+          <BsChevronRight />
+          <BsChevronRight />
+          <BsChevronRight />
+        </span>
       </Button>
     </div>
   );
