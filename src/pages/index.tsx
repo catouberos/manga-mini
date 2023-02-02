@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 import { DateTime, MonthNumbers } from "luxon";
 import useSWR from "swr";
 
-import { Dialog, Listbox, Menu, Popover, Transition } from "@headlessui/react";
+import { Dialog, Listbox, Popover, Transition } from "@headlessui/react";
 import { NextSeo } from "next-seo";
 import {
   BsBoxArrowUpRight,
@@ -32,7 +32,10 @@ import {
   BsChevronDown,
   BsArrowDownShort,
   BsArrowUpShort,
+  BsFacebook,
+  BsYoutube,
 } from "react-icons/bs";
+import { FaTiktok } from "react-icons/fa";
 import Image from "next/image";
 
 import Layout from "@layouts/Layout";
@@ -116,6 +119,7 @@ const MonthSelect = ({ date, options }: PaginationProps) => {
                 hoverable={false}
                 intent={selectedMonth === i + 1 ? "primary" : "none"}
                 onClick={() => changeSelectedMonth((i + 1) as MonthNumbers)}
+                className={selectedMonth !== i + 1 ? `hover:bg-zinc-200` : ""}
               >
                 Tháng {i + 1}
               </Button>
@@ -153,23 +157,25 @@ const Pagination = ({ date, options }: PaginationProps) => {
   const nextMonth = timeObj.plus({ month: 1 });
 
   return (
-    <div className="flex justify-between">
+    <div className="flex items-center gap-2">
       <Button
         intent="secondary"
+        hoverable={false}
         onClick={() =>
           changeDate({ year: prevMonth.year, month: prevMonth.month })
         }
       >
-        <BsChevronLeft /> Trước
+        <BsChevronLeft />
       </Button>
 
       <Button
         intent="primary"
+        hoverable={false}
         onClick={() =>
           changeDate({ year: nextMonth.year, month: nextMonth.month })
         }
       >
-        Sau <BsChevronRight />
+        <BsChevronRight />
       </Button>
     </div>
   );
@@ -745,6 +751,38 @@ export default function Home({
             </Button>
           </div>
         </div>
+        <div className="container mx-auto mt-3 flex items-center justify-between px-6">
+          <Pagination date={currentDate} options={{ changeDate }} />
+          <ul className="flex items-center gap-3 text-xl text-zinc-500">
+            <li>
+              <a
+                href="https://fb.com/truyenbanquyen/"
+                className="transition-colors duration-100 ease-linear hover:text-[#1877f2]"
+                aria-label="Facebook"
+              >
+                <BsFacebook />
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.youtube.com/c/truyenbanquyen"
+                className="transition-colors duration-100 ease-linear hover:text-[#ff0000]"
+                aria-label="YouTube"
+              >
+                <BsYoutube />
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://tiktok.com/@mi.manga.life"
+                className="transition-colors duration-100 ease-linear hover:text-black"
+                aria-label="TikTok"
+              >
+                <FaTiktok />
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <Releases
@@ -754,10 +792,6 @@ export default function Home({
         order={currentOrder}
         options={{ setModalOpen, setModalData }}
       />
-
-      <div className="container mx-auto mt-12 px-6">
-        <Pagination date={currentDate} options={{ changeDate }} />
-      </div>
     </Layout>
   );
 }

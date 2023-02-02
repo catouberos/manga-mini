@@ -1,4 +1,5 @@
 import { BsFacebook, BsArrowUp, BsYoutube } from "react-icons/bs";
+import { FaTiktok } from "react-icons/fa";
 
 export default function Footer() {
   const handleClick = () => {
@@ -29,6 +30,15 @@ export default function Footer() {
                 aria-label="YouTube"
               >
                 <BsYoutube />
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://tiktok.com/@mi.manga.life"
+                className="transition-colors duration-100 ease-linear hover:text-black"
+                aria-label="TikTok"
+              >
+                <FaTiktok />
               </a>
             </li>
           </ul>

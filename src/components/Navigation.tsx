@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
+import { FaTiktok } from "react-icons/fa";
 import { slide as Menu } from "react-burger-menu";
 import { Squash as Hamburger } from "hamburger-react";
 
@@ -49,6 +50,13 @@ const MobileMenu = () => {
             aria-label="YouTube"
           >
             <BsYoutube />
+          </a>
+          <a
+            href="https://tiktok.com/@mi.manga.life"
+            className="transition-colors duration-100 ease-linear hover:text-black"
+            aria-label="TikTok"
+          >
+            <FaTiktok />
           </a>
         </ul>
       </Menu>
