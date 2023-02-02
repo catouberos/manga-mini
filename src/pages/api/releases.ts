@@ -29,7 +29,7 @@ export default async function Releases(req: NextRequest) {
       const apiRes = await fetch(url);
       const entries = await apiRes.json();
 
-      if (entries && entries.length > 0) {
+      if (entries) {
         // Get data from your database
         return new NextResponse(JSON.stringify(entries), {
           status: 200,
