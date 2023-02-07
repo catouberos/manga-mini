@@ -1,10 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import Image, { type ImageLoaderProps } from "next/image";
 
-const cloudinaryLoader = ({ src, width, quality }: ImageLoaderProps) => {
-  return `https://res.cloudinary.com/glhfvn/image/upload/c_scale,w_${width}/q_${
-    quality || 80
-  }/f_auto/covers/${src}.jpg`;
+export const imageEndpoint = "https://ik.imagekit.io/glhf/";
+
+export const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
+  return `${imageEndpoint}tr:w-${width},q-${quality ?? 90},f-auto/${src}`;
 };
 
 const imageStyles = cva("w-full h-full", {
@@ -49,35 +49,20 @@ export default function Cover({
   entry,
   hero,
   fit,
-  loader = true,
   sizes = "(max-width: 768px) 50vw, (max-width: 1024px) 75vw, 100vw",
 }: Props) {
   if (entry.image_url) {
-    if (loader) {
-      return (
-        <Image
-          loader={cloudinaryLoader}
-          className={imageStyles({ fit })}
-          src={entry.id as string}
-          alt={entry.name}
-          width={300}
-          height={450}
-          sizes={sizes}
-        />
-      );
-    } else {
-      return (
-        <Image // : entry.image_url}
-          className={imageStyles({ fit })}
-          src={entry.image_url}
-          alt={entry.name}
-          unoptimized={true}
-          width={300}
-          height={450}
-          sizes={sizes}
-        />
-      );
-    }
+    return (
+      <Image
+        loader={imageLoader}
+        className={imageStyles({ fit })}
+        src={entry.image_url}
+        alt={entry.name}
+        width={300}
+        height={450}
+        sizes={sizes}
+      />
+    );
   } else {
     return <div className={placeholderStyles({ hero })}>{entry.name}</div>;
   }
