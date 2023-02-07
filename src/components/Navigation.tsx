@@ -32,9 +32,6 @@ const MobileMenu = () => {
         <a href="https://truyenbanquyen.com/wiki/" className="bm-item">
           Wiki
         </a>
-        <Link href="/" className="bm-item">
-          Lịch phát hành
-        </Link>
         <hr className="bm-divider w-12 border-4 border-zinc-400" />
         <ul className="bm-social" style={{ display: "flex" }}>
           <a
@@ -80,8 +77,6 @@ const MobileMenu = () => {
 };
 
 const DesktopMenu = () => {
-  const router = useRouter();
-
   return (
     <div className="hidden sm:block">
       <ul className="flex items-center gap-3 font-bold text-zinc-500">
@@ -100,18 +95,6 @@ const DesktopMenu = () => {
           >
             Wiki
           </a>
-        </li>
-        <li>
-          <Link
-            href="/"
-            className={
-              router.pathname == "/" || router.pathname.includes("archive")
-                ? "text-primary"
-                : "transition-colors duration-100 ease-linear hover:text-zinc-700"
-            }
-          >
-            Lịch phát hành
-          </Link>
         </li>
         <li>
           <a
