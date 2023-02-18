@@ -11,34 +11,25 @@ export interface Database {
     Tables: {
       licensed: {
         Row: {
-          anilist: number | null
           id: number
           image_url: string | null
           name: string
-          publisher: string
           source: string | null
           timestamp: string
-          type: string
         }
         Insert: {
-          anilist?: number | null
           id: number
           image_url?: string | null
           name: string
-          publisher: string
           source?: string | null
           timestamp?: string
-          type: string
         }
         Update: {
-          anilist?: number | null
           id?: number
           image_url?: string | null
           name?: string
-          publisher?: string
           source?: string | null
           timestamp?: string
-          type?: string
         }
       }
       publication: {
@@ -46,34 +37,31 @@ export interface Database {
           date: string
           edition: string | null
           id: string
-          image_url: string | null
+          image_url: string[] | null
           name: string
           price: number
           publisher: string
           serie_id: number | null
-          wide: boolean
         }
         Insert: {
           date: string
           edition?: string | null
           id?: string
-          image_url?: string | null
+          image_url?: string[] | null
           name: string
           price?: number
           publisher: string
           serie_id?: number | null
-          wide?: boolean
         }
         Update: {
           date?: string
           edition?: string | null
           id?: string
-          image_url?: string | null
+          image_url?: string[] | null
           name?: string
           price?: number
           publisher?: string
           serie_id?: number | null
-          wide?: boolean
         }
       }
       publisher: {
@@ -145,6 +133,9 @@ export interface Database {
     }
     Enums: {
       status: "Licensed" | "Published" | "Finished"
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }
