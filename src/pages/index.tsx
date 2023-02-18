@@ -463,7 +463,6 @@ const GridView = ({ releases, isLoading, options }: ReleasesView) => {
                   }}
                   key={release.id}
                   clickable={true}
-                  cardSize={release.wide ? "wide" : "normal"}
                 >
                   {release.edition && (
                     <Badge className="absolute top-0 right-0 bg-amber-200/75 backdrop-blur-md">
