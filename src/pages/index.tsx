@@ -27,7 +27,7 @@ import {
   BsChevronLeft,
   BsChevronRight,
   BsFilter,
-  BsColumnsGap,
+  BsColumns,
   BsListUl,
   BsChevronDown,
   BsArrowDownShort,
@@ -465,7 +465,10 @@ const GridView = ({ releases, isLoading, options }: ReleasesView) => {
                   clickable={true}
                 >
                   {release.edition && (
-                    <Badge className="absolute top-0 right-0 bg-amber-200/75 backdrop-blur-md">
+                    <Badge
+                      intent="none"
+                      className="absolute top-0 right-0 bg-amber-200/75 backdrop-blur-md"
+                    >
                       {release.edition}
                     </Badge>
                   )}
@@ -562,7 +565,10 @@ const ListView = ({ releases, isLoading, options }: ReleasesView) => {
                     >
                       <span className="">{release.name}</span>
                       {release.edition && (
-                        <Badge className="m-0 bg-amber-200/75 backdrop-blur-md">
+                        <Badge
+                          intent="none"
+                          className="m-0 bg-amber-200/75 backdrop-blur-md"
+                        >
                           {release.edition}
                         </Badge>
                       )}
@@ -762,7 +768,7 @@ export default function Home({
               aria-label="Thay đổi layout"
               intent="secondary"
             >
-              {currentView ? <BsListUl /> : <BsColumnsGap />}
+              {currentView ? <BsListUl /> : <BsColumns />}
             </Button>
           </div>
         </div>
