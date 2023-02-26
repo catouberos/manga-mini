@@ -4,7 +4,7 @@ import Image, { type ImageLoaderProps } from "next/image";
 export const imageEndpoint = "https://ik.imagekit.io/glhf/";
 
 export const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
-  return `${imageEndpoint}tr:w-${width},q-${quality ?? 90},f-auto/${src}`;
+  return `${imageEndpoint}${src}?tr:w-${width},q-${quality ?? 90},f-auto`;
 };
 
 const imageStyles = cva("w-full h-full", {
