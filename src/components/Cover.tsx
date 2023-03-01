@@ -2,6 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import Image, { type ImageLoaderProps } from "next/image";
 
 export const imageEndpoint = "https://ik.imagekit.io/glhf";
+export const imageEndpoint = "https://ik.imagekit.io/glhf";
 
 export const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
   return `${imageEndpoint}/${src}?tr=w-${width},q-${quality || 75},f-auto`;
