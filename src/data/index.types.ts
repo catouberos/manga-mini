@@ -20,7 +20,9 @@ export type ReleasesProps = {
     publishers: string[];
   };
   order: boolean;
-  options: ModalMethods;
+  options: ModalMethods & {
+    setNearest: Dispatch<SetStateAction<string>>;
+  };
 };
 
 export type ReleasesView = {
