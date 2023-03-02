@@ -1,11 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import Image, { type ImageLoaderProps } from "next/image";
 
-export const imageEndpoint = "https://ik.imagekit.io/glhf";
-export const imageEndpoint = "https://ik.imagekit.io/glhf";
+export const imageEndpoint = process.env.NEXT_PUBLIC_IMAGE_ENDPOINT || "";
 
 export const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
-  return `${imageEndpoint}/${src}?tr=w-${width},q-${quality || 75},f-auto`;
+  return `${imageEndpoint}/${width}x0/filters:quality(${quality || 75})/${src}`;
 };
 
 const imageStyles = cva("w-full h-full", {
@@ -52,8 +51,6 @@ export default function Cover({
   fit,
   sizes = "(max-width: 768px) 50vw, (max-width: 1024px) 75vw, 100vw",
 }: Props) {
-  console.log(entry);
-
   if (entry.image_url) {
     return (
       <Image
