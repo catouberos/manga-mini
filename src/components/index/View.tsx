@@ -19,7 +19,7 @@ export const GridView = ({ releases, isLoading, options }: ReleasesView) => {
         {[...Array(8)].map((_, i) => {
           return (
             <div className="container mx-auto animate-pulse px-6" key={i}>
-              <div className="mt-12 mb-6 flex items-center text-xl font-bold">
+              <div className="mb-6 mt-12 flex items-center text-xl font-bold">
                 <span className="capitalize">
                   <div className="h-6 w-72 rounded bg-zinc-300"></div>
                 </span>
@@ -46,8 +46,8 @@ export const GridView = ({ releases, isLoading, options }: ReleasesView) => {
         return (
           <div className="container mx-auto px-6" key={date.valueOf()}>
             <div
-              className="mt-12 mb-3 flex scroll-mt-48 items-center text-xl font-bold"
-              id={date.toISODate()}
+              className="mb-3 mt-12 flex scroll-mt-48 items-center text-xl font-bold"
+              id={date.toISODate()!}
             >
               <span className="capitalize">
                 {date.toFormat("EEEE - dd/MM")}
@@ -67,7 +67,7 @@ export const GridView = ({ releases, isLoading, options }: ReleasesView) => {
                   {release.edition && (
                     <Badge
                       intent="none"
-                      className="absolute top-0 right-0 bg-amber-200/75 backdrop-blur-md"
+                      className="absolute right-0 top-0 bg-amber-200/75 backdrop-blur-md"
                     >
                       {release.edition}
                     </Badge>
@@ -151,7 +151,7 @@ export const ListView = ({ releases, isLoading, options }: ReleasesView) => {
                     <tr
                       key={release.id}
                       className="scroll-mt-48 border-t"
-                      id={date.toISODate()}
+                      id={date.toISODate()!}
                     >
                       {i === 0 && (
                         <td

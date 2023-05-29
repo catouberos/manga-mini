@@ -7,14 +7,6 @@ export const imageLoader = ({ src, width, quality }: ImageLoaderProps) => {
   return `${imageEndpoint}/${width}x0/filters:quality(${quality || 75})/${src}`;
 };
 
-const imageStyles = cva("w-full h-full", {
-  variants: {
-    fit: {
-      full: "object-cover",
-    },
-  },
-});
-
 const placeholderStyles = cva(
   `flex bg-zinc-200 p-6 text-zinc-500 aspect-[2/3] h-full w-full items-center justify-center text-center font-bold`,
   {
@@ -42,20 +34,18 @@ export interface CoverProps {
 
 export interface Props
   extends CoverProps,
-    VariantProps<typeof imageStyles>,
     VariantProps<typeof placeholderStyles> {}
 
 export default function Cover({
   entry,
   hero,
-  fit,
   sizes = "(max-width: 768px) 50vw, (max-width: 1024px) 75vw, 100vw",
 }: Props) {
   if (entry.image_url) {
     return (
       <Image
         loader={imageLoader}
-        className={imageStyles({ fit })}
+        className="aspect-[2/3] h-full w-full object-cover"
         src={entry.image_url}
         alt={entry.name}
         width={300}

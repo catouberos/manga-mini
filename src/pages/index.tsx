@@ -122,7 +122,7 @@ const Releases = ({ date, view, filters, order, options }: ReleasesProps) => {
         date.diffNow("days").days < min
       ) {
         min = date.diffNow("days").days;
-        setNearest(date.toISODate());
+        setNearest(date.toISODate()!);
       }
     }
   }
@@ -249,37 +249,8 @@ export default function Home({
         </div>
         <div className="container mx-auto mt-3 flex items-center justify-between px-6">
           <Pagination date={currentDate} options={{ changeDate }} />
-          <ul className="flex items-center gap-3 text-xl text-zinc-500 sm:hidden">
-            <li>
-              <a
-                href="https://fb.com/truyenbanquyen/"
-                className="transition-colors duration-100 ease-linear hover:text-[#1877f2]"
-                aria-label="Facebook"
-              >
-                <BsFacebook />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.youtube.com/c/truyenbanquyen"
-                className="transition-colors duration-100 ease-linear hover:text-[#ff0000]"
-                aria-label="YouTube"
-              >
-                <BsYoutube />
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://tiktok.com/@mi.manga.life"
-                className="transition-colors duration-100 ease-linear hover:text-black"
-                aria-label="TikTok"
-              >
-                <FaTiktok />
-              </a>
-            </li>
-          </ul>
           <button
-            className="rounded-2xl bg-zinc-200 py-1 px-3 text-lg transition-all duration-150 ease-linear hover:bg-zinc-300"
+            className="rounded-2xl bg-zinc-200 px-3 py-1 text-lg transition-all duration-150 ease-linear hover:bg-zinc-300"
             onClick={jumpToNearest}
             aria-label="Đổi thứ tự"
             role="button"

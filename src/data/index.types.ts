@@ -8,7 +8,7 @@ import type { MonthNumbers } from "luxon";
 
 export type DateObj = {
   year: number;
-  month: MonthNumbers;
+  month: number;
 };
 
 // Publication types

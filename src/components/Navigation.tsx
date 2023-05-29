@@ -1,12 +1,45 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
-import Link from "next/link";
 import Image from "next/image";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
 import { FaTiktok } from "react-icons/fa";
 import { slide as Menu } from "react-burger-menu";
 import { Squash as Hamburger } from "hamburger-react";
+
+const SocialLinks = () => {
+  return (
+    <>
+      <li>
+        <a
+          href="https://fb.com/truyenbanquyen/"
+          className="text-2xl transition-colors duration-100 ease-linear hover:text-[#1877f2]"
+          aria-label="Facebook"
+        >
+          <BsFacebook />
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://www.youtube.com/c/truyenbanquyen"
+          className="text-2xl transition-colors duration-100 ease-linear hover:text-[#ff0000]"
+          aria-label="YouTube"
+        >
+          <BsYoutube />
+        </a>
+      </li>
+      <li>
+        <a
+          href="https://tiktok.com/@mi.manga.life"
+          className="text-2xl transition-colors duration-100 ease-linear hover:text-black"
+          aria-label="TikTok"
+        >
+          <FaTiktok />
+        </a>
+      </li>
+    </>
+  );
+};
 
 const MobileMenu = () => {
   const router = useRouter();
@@ -60,10 +93,13 @@ const MobileMenu = () => {
 
       {/* open menu on mobile */}
       <div
-        className={`fixed top-4 right-4 z-[1200] sm:hidden ${
+        className={`fixed right-4 top-4 z-[1200] flex gap-4 sm:hidden ${
           menuOpen ? "text-zinc-50" : "text-zinc-800"
         }`}
       >
+        <ul className="flex items-center gap-4 text-sm text-zinc-500">
+          <SocialLinks />
+        </ul>
         <Hamburger
           size={24}
           toggled={menuOpen}
@@ -96,33 +132,7 @@ const DesktopMenu = () => {
             Wiki
           </a>
         </li>
-        <li>
-          <a
-            href="https://fb.com/truyenbanquyen/"
-            className="text-2xl transition-colors duration-100 ease-linear hover:text-[#1877f2]"
-            aria-label="Facebook"
-          >
-            <BsFacebook />
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://www.youtube.com/c/truyenbanquyen"
-            className="text-2xl transition-colors duration-100 ease-linear hover:text-[#ff0000]"
-            aria-label="YouTube"
-          >
-            <BsYoutube />
-          </a>
-        </li>
-        <li>
-          <a
-            href="https://tiktok.com/@mi.manga.life"
-            className="text-2xl transition-colors duration-100 ease-linear hover:text-black"
-            aria-label="TikTok"
-          >
-            <FaTiktok />
-          </a>
-        </li>
+        <SocialLinks />
       </ul>
     </div>
   );
