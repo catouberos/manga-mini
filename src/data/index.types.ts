@@ -18,6 +18,7 @@ export type ReleasesProps = {
   view: boolean;
   filters: {
     publishers: string[];
+    digital: boolean;
   };
   order: boolean;
   options: ModalMethods & {

@@ -19,6 +19,8 @@ import {
   BsArrowUpShort,
   BsFacebook,
   BsYoutube,
+  BsFileRichtext,
+  BsFileX,
 } from "react-icons/bs";
 import { FaTiktok } from "react-icons/fa";
 
@@ -37,28 +39,22 @@ const useReleases = (
   year = DateTime.now().year,
   month = DateTime.now().month,
   order: boolean,
-  publishers?: string[]
+  digital?: boolean,
+  publishers?: string[],
 ) => {
   const { data, error, isLoading } = useSWR(
-    {
-      year,
-      month,
-      order,
-      publishers,
-    },
-    async ({ year, month, order, publishers }) => {
+    { url: `/api/releases`, args: { year, month, order, publishers, digital } },
+    async ({ url, args }) => {
+      const { year, month, publishers, digital, order } = args;
       const dateObj = DateTime.fromObject({ year, month });
-
-      let url = `/api/releases?start=${dateObj
-        .startOf("month")
-        .toISODate()}&end=${dateObj.endOf("month").toISODate()}&order=${
-        order ? "ascending" : "descending"
-      }`;
-
-      publishers?.map((publisher) => (url += `&publisher=${publisher}`));
-
-      return await fetch(url).then((res) => res.json());
-    }
+      return await fetch(
+        `${url}?start=${dateObj.startOf("month").toISODate()}&end=${dateObj
+          .endOf("month")
+          .toISODate()}&order=${order ? "ascending" : "descending"}${
+          digital != undefined && digital == false ? `&digital=${digital}` : ""
+        }&${publishers?.map((publisher) => `publisher=${publisher}`).join("&")}`,
+      ).then((res) => res.json());
+    },
   );
 
   return {
@@ -70,14 +66,15 @@ const useReleases = (
 
 const Releases = ({ date, view, filters, order, options }: ReleasesProps) => {
   const { year, month } = date;
-  const { publishers } = filters;
+  const { publishers, digital } = filters;
   const { setNearest } = options;
 
   const { releases, isLoading, isError } = useReleases(
     year,
     month,
     order,
-    publishers
+    digital,
+    publishers,
   );
 
   if (isError)
@@ -157,6 +154,7 @@ export default function Home({
 
   const [filterOpen, setFilterOpen] = useState(false);
   const [filterPublishers, changeFilterPublishers] = useState<string[]>([]);
+  const [filterDigital, setFilterDigital] = useState(true);
 
   const [nearest, setNearest] = useState<string>("");
 
@@ -165,11 +163,18 @@ export default function Home({
   useEffect(() => {
     const view = window.localStorage.getItem("RELEASES_VIEW");
     if (view !== null) changeCurrentView(JSON.parse(view));
+
+    const filterDigital = window.localStorage.getItem("RELEASES_DIGITAL");
+    if (filterDigital !== null) setFilterDigital(JSON.parse(filterDigital));
   }, []);
   // save view to browser
   useEffect(() => {
     window.localStorage.setItem("RELEASES_VIEW", JSON.stringify(currentView));
-  }, [currentView]);
+    window.localStorage.setItem(
+      "RELEASES_DIGITAL",
+      JSON.stringify(filterDigital),
+    );
+  }, [currentView, filterDigital]);
 
   const [currentOrder, setCurrentOrder] = useState(true); // true = ascending, false = descending
 
@@ -249,21 +254,36 @@ export default function Home({
         </div>
         <div className="container mx-auto mt-3 flex items-center justify-between px-6">
           <Pagination date={currentDate} options={{ changeDate }} />
-          <button
-            className="rounded-2xl bg-zinc-200 px-3 py-1 text-lg transition-all duration-150 ease-linear hover:bg-zinc-300"
-            onClick={jumpToNearest}
-            aria-label="Đổi thứ tự"
-            role="button"
-          >
-            Gần nhất
-          </button>
+          <div className="flex gap-3">
+            <button
+              className="rounded-2xl bg-zinc-200 px-3 py-1 text-lg transition-all duration-150 ease-linear hover:bg-zinc-300"
+              onClick={jumpToNearest}
+              aria-label="Đổi thứ tự"
+              role="button"
+            >
+              Gần nhất
+            </button>
+            <Button
+              className="h-full flex-1 text-2xl"
+              onClick={() => setFilterDigital((digital) => !digital)}
+              aria-label="Lọc sách điện tử"
+              role="button"
+              intent={filterDigital ? "secondary" : "primary"}
+            >
+              {filterDigital ? (
+                <BsFileRichtext className="h-5" />
+              ) : (
+                <BsFileX className="h-5" />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
 
       <Releases
         date={currentDate}
         view={currentView}
-        filters={{ publishers: filterPublishers }}
+        filters={{ publishers: filterPublishers, digital: filterDigital }}
         order={currentOrder}
         options={{ setModalOpen, setModalData, setNearest }}
       />

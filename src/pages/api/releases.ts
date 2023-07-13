@@ -18,10 +18,15 @@ export default async function Releases(req: NextRequest) {
       const end =
         searchParams.get("end") ?? DateTime.now().endOf("month").toISODate();
       const order = searchParams.get("order");
+      const digital = searchParams.get("digital");
 
       const publisher = searchParams.getAll("publisher");
 
-      let url = `https://manga.glhf.vn/api/releases?start=${start}&end=${end}&order=${order}`;
+      let url = `https://manga.glhf.vn/api/releases?start=${start}&end=${end}&order=${
+        order ? "ascending" : "descending"
+      }${
+        digital != undefined && digital == "false" ? `&digital=${digital}` : "&"
+      }${publisher?.map((publisher) => `publisher=${publisher}`).join("&")}`;
 
       if (publisher.length > 0)
         publisher.map((publisher) => (url += `&publisher=${publisher}`));

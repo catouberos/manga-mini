@@ -19,7 +19,7 @@ const placeholderStyles = cva(
     defaultVariants: {
       hero: false,
     },
-  }
+  },
 );
 
 export interface CoverProps {

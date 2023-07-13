@@ -15,7 +15,7 @@ export default function Custom404() {
           images: [
             {
               url: encodeURI(
-                "https://manga.glhf.vn/api/og/?title=Không tìm thấy trang"
+                "https://manga.glhf.vn/api/og/?title=Không tìm thấy trang",
               ),
               width: 1200,
               height: 630,

@@ -21,7 +21,7 @@ const buttonStyles = cva(
       intent: "none",
       hoverable: true,
     },
-  }
+  },
 );
 
 const buttonContainerStyles = cva("flex justify-center items-center gap-3");

@@ -19,7 +19,7 @@ const MonthPicker = ({ date, options }: PaginationProps) => {
   const availableYear = [
     ...Array.from(
       { length: currentYear - 2021 + 2 }, // get from 2021 + the year after that
-      (_, index) => 2021 + index
+      (_, index) => 2021 + index,
     ),
   ];
 

@@ -23,7 +23,7 @@ const cardStyles = cva(
       hoverable: true,
       clickable: false,
     },
-  }
+  },
 );
 
 export interface CardProps
