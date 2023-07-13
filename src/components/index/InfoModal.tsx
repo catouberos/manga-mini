@@ -32,7 +32,7 @@ const InfoModal = ({ isOpen, onClose, data }: InfoModalProps) => {
                 </Dialog.Title>
                 <Dialog.Description>
                   <b>Ngày phát hành</b>:{" "}
-                  {DateTime.fromISO(data.date).toLocaleString(
+                  {DateTime.fromISO(data.date!).toLocaleString(
                     DateTime.DATE_SHORT,
                   )}
                   <br />
@@ -62,48 +62,74 @@ const InfoModal = ({ isOpen, onClose, data }: InfoModalProps) => {
                 )}
                 <br />
                 <div className="mt-3 flex items-center gap-2">
-                  <Button className="bg-[#c92127] text-zinc-50">
-                    <a
-                      href={`https://fahasa.com/catalogsearch/result/?q=${data.name}`}
-                      target="_blank"
-                      rel="noreferrer"
+                {!data.digital ? (
+                    <>
+                      <Button
+                        className="bg-[#c92127] text-zinc-50"
+                        href={`https://fahasa.com/catalogsearch/result/?q=${data.name}`}
+                      >
+                        <Image
+                          src="/img/fahasa-logo.png"
+                          alt="FAHASA"
+                          width={20}
+                          height={20}
+                        />
+                        FAHASA
+                      </Button>{" "}
+                      <Button
+                        className="bg-[#1a94ff] text-zinc-50"
+                        href={`https://tiki.vn/search?q=${data.name}`}
+                      >
+                        <Image
+                          src="/img/tiki-logo.png"
+                          alt="Tiki"
+                          width={30}
+                          height={20}
+                        />
+                        TIKI
+                      </Button>{" "}
+                      <Button
+                        className="bg-white text-[#ff6633]"
+                        href={`https://shopee.vn/search?keyword=${data.name}`}
+                      >
+                        <Image
+                          src="/img/shopee-logo.png"
+                          alt="Shopee"
+                          width={15}
+                          height={20}
+                        />
+                        Shopee
+                      </Button>{" "}
+                      <Button
+                        className="bg-[#5d8650] text-zinc-50"
+                        href={`https://hikaru.vn/search?type=product&q=${data.name.replace(
+                          / - /g,
+                          " "
+                        )}`}
+                      >
+                        <Image
+                          src="/img/hikaru-logo.png"
+                          alt="Hikaru"
+                          width={28}
+                          height={20}
+                        />
+                        Hikaru
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      className="bg-[#eb2f3b] text-zinc-50"
+                      href="https://thuvienkimdong.vn/"
                     >
                       <Image
-                        src="/img/fahasa-logo.png"
-                        alt="FAHASA"
-                        width={107}
+                        src="/img/kd-comics-logo.jpg"
+                        alt="Kim Dong Comics"
+                        width={20}
                         height={20}
                       />
-                    </a>
-                  </Button>
-                  <Button className="bg-[#1a94ff] text-zinc-50">
-                    <a
-                      href={`https://tiki.vn/search?q=${data.name}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        src="/img/tiki-logo.png"
-                        alt="Tiki"
-                        width={30}
-                        height={20}
-                      />
-                    </a>
-                  </Button>
-                  <Button className="bg-[#ff6633] text-zinc-50">
-                    <a
-                      href={`https://shopee.vn/search?keyword=${data.name}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Image
-                        src="/img/shopee-logo.png"
-                        alt="Shopee"
-                        width={59}
-                        height={20}
-                      />
-                    </a>
-                  </Button>
+                      Kim Đồng Comics
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
